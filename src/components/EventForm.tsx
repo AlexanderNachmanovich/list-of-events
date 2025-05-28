@@ -1,41 +1,43 @@
 import React, { useState } from 'react';
 
+
 interface EventFormProps {
-    onSubmit: (event: { title: string; date: string }, isEdit?: boolean) => void;
-    existingEvent?: { title: string; date: string };
+  onSubmit: (event: { title: string; date: string }) => void;
+  initialData?: { title: string; date: string } | null; // Изменено на | null
 }
 
-const EventForm: React.FC<EventFormProps> = ({ onSubmit, existingEvent }) => {
-    const [title, setTitle] = useState(existingEvent?.title || '');
-    const [date, setDate] = useState(existingEvent?.date || '');
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (title && date) {
-            onSubmit({ title, date }, !!existingEvent);
-            setTitle('');
-            setDate('');
-        }
-    };
+const EventForm: React.FC<EventFormProps> = ({ onSubmit, initialData }) => {
+  const [title, setTitle] = useState(initialData?.title || '');
+  const [date, setDate] = useState(initialData?.date || '');
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Название мероприятия"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-            />
-            <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                required
-            />
-            <button type="submit">{existingEvent ? 'Редактировать' : 'Добавить'}</button>
-        </form>
-    );
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (title && date) {
+      onSubmit({ title, date });
+      setTitle('');
+      setDate('');
+    } else {
+      alert('Пожалуйста, заполните все поля.');
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Название мероприятия"
+      />
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      />
+      <button type="submit">Добавить</button>
+    </form>
+  );
 };
 
 export default EventForm;
