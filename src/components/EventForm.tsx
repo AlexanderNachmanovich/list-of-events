@@ -1,4 +1,3 @@
-// components/EventForm.tsx
 import React, { useState, useEffect } from 'react';
 
 interface EventFormProps {
